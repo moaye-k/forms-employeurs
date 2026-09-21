@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Enquête de satisfaction — E-CNPS Employeurs{% endblock %}
+{% block hero %}
+<div class="landing-hero">
+    <div class="landing-topline">
+        <img class="landing-logo" src="{{ url_for('static', filename='cnps-logo.svg') }}" alt="CNPS">
+        <div class="landing-title">ENQUÊTE DE SATISFACTION<br>EMPLOYEURS ET ASSIMILÉS</div>
+    </div>
+    <div class="landing-edition">EDITION 2026</div>
+    <p class="landing-subtitle">Direction marketing, communication et relation client</p>
+    <div class="landing-curve"></div>
+</div>
+{% endblock %}
+{% block content %}
+<div class="landing-copy">
+    <p>Ce questionnaire s’adresse aux <strong>employeurs</strong> et porte sur votre expérience des services de <strong>Prestations</strong> du portail E-CNPS, notamment les attestations, les allocations, les dossiers de pension et les autres démarches qui vous sont destinées.</p>
+    <p>Votre avis nous aidera à mieux répondre à vos besoins. Vos réponses sont <strong>anonymes</strong> et contribueront à améliorer la qualité des services proposés aux employeurs.</p>
+</div>
+<a class="landing-cta" href="{{ url_for('etape1') }}">Commencer le questionnaire</a>
+{% endblock %}

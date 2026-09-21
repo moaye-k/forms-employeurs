@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block hero %}
+<div class="hero">
+    <img class="brand-logo" src="{{ url_for('static', filename='cnps-logo.svg') }}" alt="CNPS">
+    <div class="step-label">Étape {{ step }} sur {{ total_steps }}</div>
+    <h1>Pour finir</h1>
+    <div class="progress-track"><div class="progress-fill" style="width: {{ (step/total_steps*100)|int }}%;"></div></div>
+</div>
+{% endblock %}
+{% block content %}
+<form method="POST">
+    <div class="question-block">
+        <p class="q-text">Avez-vous pu accomplir votre demande de prestation entièrement en ligne, sans déplacement ni nouveau contact ?</p>
+        <div class="radio-pill-col">
+            {% for choix in fcr %}
+            <label class="radio-pill"><input type="radio" name="fcr" value="{{ choix }}" required>{{ choix }}</label>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="question-block">
+        <p class="q-text">Comment jugez-vous le délai de traitement de votre demande de prestation ?</p>
+        <div class="radio-pill-row">
+            {% for choix in delai %}
+            <label class="radio-pill"><input type="radio" name="delai" value="{{ choix }}" required>{{ choix }}</label>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="question-block">
+        <p class="q-text">Avez-vous rencontré un blocage ou une étape peu claire lors de votre demande ? Si oui, laquelle ? <em style="font-weight:400;">(facultatif)</em></p>
+        <textarea name="blocage"></textarea>
+    </div>
+
+    <div class="question-block">
+        <p class="q-text">Quelles améliorations pourriez-vous nous suggérer pour le volet prestations ? <em style="font-weight:400;">(facultatif)</em></p>
+        <textarea name="suggestions"></textarea>
+    </div>
+
+    <div class="question-block" style="border-bottom:none;">
+        <p class="q-text">Comptez-vous continuer à effectuer vos demandes de prestation sur E-CNPS plutôt que de vous déplacer en agence ?</p>
+        <div class="radio-pill-col">
+            {% for choix in continuite %}
+            <label class="radio-pill"><input type="radio" name="continuite" value="{{ choix }}" required>{{ choix }}</label>
+            {% endfor %}
+        </div>
+    </div>
+
+    <button class="cta" type="submit">Envoyer mes réponses →</button>
+</form>
+{% endblock %}

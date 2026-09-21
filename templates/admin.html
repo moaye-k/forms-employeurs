@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard — E-CNPS Employeurs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+    :root { --navy:#0B2545; --orange:#E8641F; --ice:#F4F6F9; --ink:#14213D; --gray:#6b7488; --line:#E4E7EB; --green:#0F7B4E; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:'Inter',Arial,sans-serif; background:var(--ice); display:flex; justify-content:center; padding-bottom: 40px;}
+    .page-wrap { width:100%; max-width:1000px; }
+    .hero {
+        background:var(--navy); clip-path:polygon(0 0,100% 0,100% 90%,0 100%);
+        padding:28px 40px 40px; display:flex; justify-content:space-between; align-items:flex-start;
+    }
+    .hero-left .step-label { color:rgba(255,255,255,0.55); font-size:12px; font-weight:600; margin-bottom:6px; }
+    .brand-logo { width:58px; height:58px; object-fit:contain; margin-bottom:12px; }
+    .hero-left h1 { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:21px; color:white; margin:0; }
+    .export-btn { text-decoration:none; display:flex; align-items:center; gap:8px; background:var(--orange); color:white;
+        font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:13px; padding:11px 18px; border-radius:9px; }
+    .content { margin:-16px 26px 0; }
+    .stat-row { display:flex; gap:14px; margin-bottom:20px; flex-wrap: wrap;}
+    .stat-card { flex:1; min-width: 150px; background:white; border-radius:12px; padding:16px 18px; box-shadow:0 12px 30px rgba(11,37,69,0.10); }
+    .stat-num { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:22px; color:var(--navy); display:block; }
+    .stat-label { font-size:12px; color:var(--gray); margin-top:2px; }
+    .stat-card.accent .stat-num { color:var(--orange); }
+    .stat-card.green .stat-num { color:var(--green); }
+    .table-card { background:white; border-radius:14px; box-shadow:0 12px 30px rgba(11,37,69,0.10); overflow:auto; }
+    .table-head { display:flex; justify-content:space-between; align-items:center; padding:18px 20px 14px; border-bottom:1px solid var(--line); }
+    .table-head h2 { font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15px; color:var(--ink); margin:0; }
+    table { width:100%; border-collapse:collapse; font-size:12px; white-space: nowrap;}
+    th { text-align:left; color:var(--gray); font-weight:600; font-size:10.5px; text-transform:uppercase; letter-spacing:0.3px; padding:10px 14px; background:var(--ice); position: sticky; top:0;}
+    td { padding:11px 14px; border-top:1px solid var(--line); color:var(--ink); }
+    tr:hover td { background:#FAFBFC; }
+    .empty-state { padding: 60px 20px; text-align:center; color: var(--gray); font-size: 14px;}
+    @media (max-width: 600px) {
+        body { padding-bottom: 20px; }
+        .hero { padding: 22px 20px 34px; display:block; }
+        .hero-left h1 { font-size: 18px; line-height: 1.25; }
+        .brand-logo { width: 52px; height: 52px; margin-bottom: 10px; }
+        .export-btn { width: 100%; justify-content: center; margin-top: 18px; }
+        .content { margin: -12px 10px 0; }
+        .stat-row { gap: 8px; }
+        .stat-card { min-width: calc(50% - 4px); padding: 13px 12px; }
+        .stat-num { font-size: 19px; }
+        .stat-label { font-size: 11px; line-height: 1.35; }
+        .table-head { padding: 15px 14px 12px; }
+        .table-card { border-radius: 10px; }
+        table { font-size: 11px; }
+        th, td { padding-left: 10px; padding-right: 10px; }
+    }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+    <div class="hero">
+        <div class="hero-left">
+            <img class="brand-logo" src="{{ url_for('static', filename='cnps-logo.svg') }}" alt="CNPS">
+            <div class="step-label">Espace administrateur</div>
+            <h1>Réponses — Enquête E-CNPS Employeurs</h1>
+        </div>
+        <a class="export-btn" href="/admin/reponses/export?cle={{ request.args.get('cle') }}">Exporter vers Excel ↓</a>
+    </div>
+
+    <div class="content">
+        <div class="stat-row">
+            <div class="stat-card"><span class="stat-num">{{ total }}</span><span class="stat-label">réponses reçues</span></div>
+            <div class="stat-card accent"><span class="stat-num">{{ nps_score if nps_score is not none else '—' }}</span><span class="stat-label">score NPS</span></div>
+            <div class="stat-card green"><span class="stat-num">{{ (nps_moyen ~ ' / 10') if nps_moyen is not none else '—' }}</span><span class="stat-label">note moyenne NPS</span></div>
+            <div class="stat-card green"><span class="stat-num">{{ (csat_pourcent ~ '%') if csat_pourcent is not none else '—' }}</span><span class="stat-label">satisfaits (CSAT)</span></div>
+            <div class="stat-card accent"><span class="stat-num">{{ (fcr_pourcent ~ '%') if fcr_pourcent is not none else '—' }}</span><span class="stat-label">résolu 100% en ligne (FCR)</span></div>
+        </div>
+
+        <div class="table-card">
+            <div class="table-head"><h2>Toutes les réponses</h2></div>
+            {% if rows %}
+            <table>
+                <tr>
+                    <th>Date</th>
+                    <th>Taille entreprise</th>
+                    <th>Rôle</th>
+                    <th>Fréquence</th>
+                    <th>Sexe</th>
+                    <th>NPS</th>
+                    <th>CSAT</th>
+                    <th>CES</th>
+                    <th>FCR</th>
+                    <th>Délai</th>
+                    <th>Continuité</th>
+                    <th>Blocage</th>
+                    <th>Suggestions</th>
+                </tr>
+                {% for row in rows %}
+                <tr>
+                    <td>{{ row.date_soumission }}</td>
+                    <td>{{ row.taille_entreprise }}</td>
+                    <td>{{ row.role }}</td>
+                    <td>{{ row.frequence }}</td>
+                    <td>{{ row.sexe }}</td>
+                    <td>{{ row.nps_note }}</td>
+                    <td>{{ row.csat }}</td>
+                    <td>{{ row.ces }}</td>
+                    <td>{{ row.fcr }}</td>
+                    <td>{{ row.delai }}</td>
+                    <td>{{ row.continuite }}</td>
+                    <td style="white-space:normal; max-width:200px;">{{ row.blocage }}</td>
+                    <td style="white-space:normal; max-width:200px;">{{ row.suggestions }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <div class="empty-state">Aucune réponse collectée pour le moment.</div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+</body>
+</html>

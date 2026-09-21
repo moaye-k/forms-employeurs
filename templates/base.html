@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}E-CNPS Employeurs{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0B2545; --orange: #E8641F; --ice: #F4F6F9;
+            --ink: #14213D; --gray: #6b7488; --line: #E4E7EB; --green: #0F7B4E;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; font-family: 'Inter', Arial, sans-serif;
+            background: var(--ice); min-height: 100vh;
+            display: flex; justify-content: center; padding: 0 0 40px;
+        }
+        .page-wrap { width: 100%; max-width: 680px; }
+        .hero {
+            background: var(--navy);
+            clip-path: polygon(0 0, 100% 0, 100% 82%, 0 100%);
+            padding: 30px 40px 46px;
+        }
+        .brand-logo { display: block; width: 72px; height: 72px; object-fit: contain; margin-bottom: 18px; }
+        .step-label { color: rgba(255,255,255,0.55); font-size: 12px; font-weight: 600; margin-bottom: 8px; }
+        .hero h1 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 21px; color: white; margin: 0 0 14px; }
+        .progress-track { height: 5px; background: rgba(255,255,255,0.15); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--orange); border-radius: 4px; }
+        .body-panel {
+            background: white; margin: -26px 26px 0; border-radius: 14px;
+            padding: 30px 32px 32px; box-shadow: 0 20px 50px rgba(11,37,69,0.15);
+        }
+        .question-block { margin-bottom: 28px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+        .question-block:last-of-type { border-bottom: none; margin-bottom: 8px; padding-bottom: 0; }
+        .q-text { font-weight: 600; font-size: 14.5px; color: var(--ink); margin: 0 0 14px; line-height: 1.5; }
+        .q-hint { font-weight: 400; font-size: 12.5px; color: var(--gray); margin: -10px 0 14px; }
+
+        .radio-pill-row { display: flex; gap: 8px; flex-wrap: wrap; }
+        .radio-pill { flex: 1; min-width: 130px; border: 1.5px solid var(--line); border-radius: 10px;
+            padding: 12px 10px; text-align: center; font-size: 13px; font-weight: 600; color: var(--gray);
+            cursor: pointer; }
+        .radio-pill input { display: none; }
+        .radio-pill:has(input:checked) { border-color: var(--orange); color: var(--orange); background: #FDF0E8; }
+
+        .radio-pill-col { display: flex; flex-direction: column; gap: 8px; }
+        .radio-pill-col .radio-pill { min-width: unset; text-align: left; }
+
+        textarea, .fake-select {
+            width: 100%; border: 1.5px solid var(--line); border-radius: 10px;
+            padding: 12px 14px; font-family: inherit; font-size: 13.5px; color: var(--ink);
+        }
+        textarea { min-height: 70px; resize: vertical; }
+
+        table.matrix { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+        table.matrix th { font-weight: 600; color: var(--gray); font-size: 11px; text-align: center; padding: 6px 4px 10px; }
+        table.matrix th:first-child { text-align: left; }
+        table.matrix td { padding: 10px 4px; text-align: center; border-top: 1px solid var(--line); }
+        table.matrix td:first-child { text-align: left; font-weight: 500; color: var(--ink); padding-right: 10px; }
+        table.matrix input[type=radio] { width: 16px; height: 16px; accent-color: var(--orange); }
+
+        .nps-row { display: flex; gap: 4px; }
+        .nps-btn { flex: 1; text-align: center; }
+        .nps-btn input { display: none; }
+        .nps-btn label {
+            display: block; padding: 10px 0; border: 1.5px solid var(--line); border-radius: 8px;
+            font-weight: 700; font-size: 13px; color: var(--ink); cursor: pointer;
+        }
+        .nps-btn input:checked + label { border-color: var(--orange); background: #FDF0E8; color: var(--orange); }
+        .nps-scale-labels { display: flex; justify-content: space-between; font-size: 10.5px; color: var(--gray); margin-top: 6px; }
+
+        .cta {
+            text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;
+            background: var(--orange); color: white; font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600; font-size: 15px; padding: 15px 24px; border-radius: 10px;
+            border: none; cursor: pointer; width: 100%; margin-top: 6px;
+        }
+        .cta:hover { opacity: 0.94; }
+        .landing-hero { position: relative; min-height: 330px; overflow: hidden; padding: 28px 26px 70px; color: white; background: linear-gradient(145deg, #082d55 0%, #06446a 65%, #08749a 100%); }
+        .landing-topline { position: relative; z-index: 1; display: flex; align-items: center; gap: 12px; }
+        .landing-logo { width: 58px; height: 58px; padding: 5px; background: white; border-radius: 12px; object-fit: contain; }
+        .landing-title { font-size: 13px; font-weight: 700; line-height: 1.25; letter-spacing: .2px; }
+        .landing-edition { position: relative; z-index: 1; margin-top: 34px; color: #ffb273; font-size: 16px; font-weight: 700; letter-spacing: .5px; }
+        .landing-subtitle { position: relative; z-index: 1; margin: 14px 0 0; color: #dbe9f4; font-size: 14px; line-height: 1.55; }
+        .landing-curve { position: absolute; width: 430px; height: 230px; right: -170px; bottom: -130px; border: 1px solid rgba(149, 211, 232, .35); border-radius: 50%; transform: rotate(-18deg); }
+        .landing-curve::after { content: ''; position: absolute; width: 390px; height: 210px; left: -48px; top: 22px; border: 1px solid rgba(149, 211, 232, .18); border-radius: 50%; }
+        .landing-copy p { margin: 0 0 20px; color: #414954; font-size: 15px; line-height: 1.7; }
+        .landing-cta { display: flex; align-items: center; justify-content: center; min-height: 58px; margin-top: 28px; padding: 14px 20px; border-radius: 12px; background: #f25c18; color: white; box-shadow: 0 10px 22px rgba(242, 92, 24, .25); font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; text-decoration: none; }
+        .landing-cta:hover { background: #df4f10; }
+        @media (max-width: 600px) {
+            body { padding-bottom: 20px; }
+            .hero { padding: 24px 20px 38px; }
+            .brand-logo { width: 60px; height: 60px; margin-bottom: 14px; }
+            .hero h1 { font-size: 19px; line-height: 1.25; }
+            .body-panel { margin: -20px 12px 0; padding: 24px 18px 24px; border-radius: 12px; }
+            .question-block { margin-bottom: 22px; padding-bottom: 20px; }
+            .q-text { font-size: 14px; }
+            .radio-pill { min-width: 100%; padding: 11px 10px; }
+            .nps-row { gap: 3px; }
+            .nps-btn label { padding: 9px 0; font-size: 12px; }
+            table.matrix { font-size: 11px; }
+            table.matrix th { font-size: 9px; }
+            table.matrix td { padding: 8px 2px; }
+            .landing-hero { min-height: 330px; padding: 24px 20px 66px; }
+            .landing-topline { gap: 10px; }
+            .landing-logo { flex: 0 0 54px; width: 54px; height: 54px; }
+            .landing-title { font-size: 11px; }
+            .landing-edition { margin-top: 28px; font-size: 15px; }
+            .landing-subtitle { max-width: 100%; font-size: 14px; }
+            .landing-copy p { font-size: 14px; line-height: 1.6; }
+            .landing-cta { min-height: 54px; font-size: 15px; }
+        }
+        @media (max-width: 360px) {
+            .landing-title { font-size: 10px; }
+            .landing-subtitle { font-size: 12px; }
+            .body-panel { margin-left: 8px; margin-right: 8px; padding-left: 14px; padding-right: 14px; }
+            .nps-btn label { font-size: 11px; }
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrap">
+    {% block hero %}{% endblock %}
+    <div class="body-panel">
+        {% block content %}{% endblock %}
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-labelledby="title desc">
+  <title id="title">Logo CNPS</title>
+  <desc id="desc">Logo CNPS avec quatre couleurs et une silhouette de parent et enfant</desc>
+  <rect width="400" height="400" fill="#fff"/>
+  <rect x="38" y="18" width="162" height="162" fill="#164798"/>
+  <rect x="200" y="18" width="162" height="162" fill="#f28c00"/>
+  <rect x="38" y="180" width="162" height="162" fill="#009447"/>
+  <rect x="200" y="180" width="162" height="162" fill="#ffdf00"/>
+  <g fill="#fff">
+    <circle cx="177" cy="91" r="30"/>
+    <path d="M145 124c-18 14-29 37-30 69l-5 78h58l8-92c2-22-6-42-31-55z"/>
+    <path d="M135 242h45l12 72h-65z"/>
+    <circle cx="247" cy="144" r="21"/>
+    <path d="M226 167c-15 8-23 24-24 44l-3 55h48l5-66c1-16-7-28-26-33z"/>
+    <path d="M220 260h28l13 47h-47z"/>
+    <path d="M211 190c28-10 48-5 66 16l-10 13c-19-13-34-15-52-7z"/>
+  </g>
+  <text x="200" y="382" text-anchor="middle" font-family="Arial, sans-serif" font-size="58" font-weight="700" fill="#164798">CNPS</text>
+</svg>

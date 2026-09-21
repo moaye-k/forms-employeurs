@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block hero %}
+<div class="hero">
+    <img class="brand-logo" src="{{ url_for('static', filename='cnps-logo.svg') }}" alt="CNPS">
+    <div class="step-label">Étape {{ step }} sur {{ total_steps }}</div>
+    <h1>Votre profil employeur</h1>
+    <div class="progress-track"><div class="progress-fill" style="width: {{ (step/total_steps*100)|int }}%;"></div></div>
+</div>
+{% endblock %}
+{% block content %}
+<form method="POST">
+    <div class="question-block">
+        <p class="q-text">Quelle est la taille de votre entreprise (effectif déclaré) ?</p>
+        <div class="radio-pill-col">
+            {% for choix in taille_entreprise %}
+            <label class="radio-pill"><input type="radio" name="taille_entreprise" value="{{ choix }}" required>{{ choix }}</label>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="question-block">
+        <p class="q-text">Quel est votre rôle vis-à-vis d'E-CNPS ?</p>
+        <div class="radio-pill-col">
+            {% for choix in role %}
+            <label class="radio-pill"><input type="radio" name="role" value="{{ choix }}" required>{{ choix }}</label>
+            {% endfor %}
+        </div>
+        <input type="text" name="role_autre" placeholder="Si 'Autre', précisez ici (facultatif)" style="margin-top:8px;">
+    </div>
+
+    <div class="question-block">
+        <p class="q-text">Quelle(s) demande(s) de prestation avez-vous effectuée(s) sur E-CNPS ?</p>
+        <p class="q-hint">Plusieurs choix possibles.</p>
+        <div class="radio-pill-col">
+            {% for choix in demandes_prestation %}
+            <label class="radio-pill"><input type="checkbox" name="demandes_prestation" value="{{ choix }}">{{ choix }}</label>
+            {% endfor %}
+        </div>
+        <input type="text" name="demandes_autre" placeholder="Si 'Autre', précisez ici (facultatif)" style="margin-top:8px;">
+    </div>
+
+    <div class="question-block">
+        <p class="q-text">À quelle fréquence effectuez-vous des demandes de prestation sur E-CNPS ?</p>
+        <div class="radio-pill-row">
+            {% for choix in frequence %}
+            <label class="radio-pill"><input type="radio" name="frequence" value="{{ choix }}" required>{{ choix }}</label>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="question-block">
+        <p class="q-text">Sur quel support avez-vous principalement utilisé E-CNPS ?</p>
+        <div class="radio-pill-row">
+            {% for choix in support %}
+            <label class="radio-pill"><input type="radio" name="support" value="{{ choix }}" required>{{ choix }}</label>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="question-block" style="border-bottom:none;">
+        <p class="q-text">Sexe</p>
+        <div class="radio-pill-row">
+            {% for choix in sexe %}
+            <label class="radio-pill"><input type="radio" name="sexe" value="{{ choix }}" required>{{ choix }}</label>
+            {% endfor %}
+        </div>
+    </div>
+
+    <button class="cta" type="submit">Continuer →</button>
+</form>
+{% endblock %}
