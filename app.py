@@ -14,7 +14,12 @@ from reference_data import (
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "change-moi-en-production")
 
-DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+DATA_DIR = os.environ.get(
+    "DATA_DIR",
+    "/tmp/forms_employeurs" if os.environ.get("VERCEL") else os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "data"
+    ),
+)
 RESPONSES_FILE = os.path.join(DATA_DIR, "reponses_employeurs.csv")
 
 CSV_HEADERS = (
