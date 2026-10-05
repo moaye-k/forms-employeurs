@@ -1,10 +1,7 @@
 {% extends "base.html" %}
 {% block hero %}
 <div class="hero">
-    <img class="brand-logo" src="{{ url_for('static', filename='cnps-logo.svg') }}" alt="CNPS">
-    <div class="step-label">Étape {{ step }} sur {{ total_steps }}</div>
     <h1>Pour finir</h1>
-    <div class="progress-track"><div class="progress-fill" style="width: {{ (step/total_steps*100)|int }}%;"></div></div>
 </div>
 {% endblock %}
 {% block content %}

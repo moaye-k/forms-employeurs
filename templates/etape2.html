@@ -1,16 +1,13 @@
 {% extends "base.html" %}
 {% block hero %}
 <div class="hero">
-    <img class="brand-logo" src="{{ url_for('static', filename='cnps-logo.svg') }}" alt="CNPS">
-    <div class="step-label">Étape {{ step }} sur {{ total_steps }}</div>
     <h1>Recommandation</h1>
-    <div class="progress-track"><div class="progress-fill" style="width: {{ (step/total_steps*100)|int }}%;"></div></div>
 </div>
 {% endblock %}
 {% block content %}
 <form method="POST">
     <div class="question-block">
-        <p class="q-text">Quelle est la probabilité que vous recommandiez E-CNPS pour les démarches de prestations à un autre employeur ou confrère ?</p>
+        <p class="q-text">Recommanderiez-vous E-CNPS pour les démarches de prestations à un autre employeur ou confrère ?</p>
         <div class="nps-row">
             {% for i in range(11) %}
             <div class="nps-btn">
